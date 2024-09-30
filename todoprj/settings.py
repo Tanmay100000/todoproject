@@ -9,6 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from pathlib import Path
 
@@ -20,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(i9(8hpcm_(=k$m!m)+^h-u90mwh4e#xcs86+zfp40b0@ztzkd'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -74,10 +79,23 @@ WSGI_APPLICATION = 'todoprj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_NAME'),         # The name of the database you created
+        'USER': os.getenv('DATABASE_USER'),              # The MySQL username you created (or 'root' if not using a new user)
+        'PASSWORD': os.getenv('DATABASE_PASS'),     # The MySQL password you created (or root password if not using a new user)
+        'HOST': '127.0.0.1',         # The host of your MySQL database (default is 'localhost')
+        'PORT': '3306',              # The default port for MySQL
     }
 }
 
